@@ -13,10 +13,10 @@ aftergauss = cv2.GaussianBlur(greysmall,(11,11),0)
 #ret,afterthreshold = cv2.threshold(aftergauss, 10, 255, cv2.THRESH_BINARY)
 
 afterthreshold = cv2.adaptiveThreshold(aftergauss,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
-afterbitwise = cv2.bitwise_not( afterthreshold);
+afterbitwise = cv2.bitwise_not( afterthreshold)
 cv2.imshow("kk",afterbitwise)
 
-torgb = cv2.cvtColor(afterbitwise,cv2.COLOR_GRAY2BGR);
+torgb = cv2.cvtColor(afterbitwise,cv2.COLOR_GRAY2BGR)
 borders = cv2.HoughLinesP(afterbitwise,1, np.pi / 180 ,80,400,10).tolist()
 #borders = cv2.HoughLinesP(afterbitwise,1,np.pi/180,275, minLineLength = 600, maxLineGap = 100)[0].tolist()
 def ecliduan(x1,x2,y1,y2):
@@ -69,9 +69,7 @@ cv2.circle(small2,(Xmaxcorner,Ymincorner),2,(255,0,0),2)
 distofbelowcorner = ecliduan(Xmincorner,Xmaxcorner,Ymaxcorner,Ymaxcorner)
 widthOfanswerRow = distofbelowcorner/3
 YofcornerOfanswercol = 0
-print YcornersList
 for y in range(len(YcornersList)):
-    print YcornersList[y]
     if(ecliduan(Xmincorner,Xmincorner,YcornersList[y],Ymaxcorner) > widthOfanswerRow):
         YofcornerOfanswercol = YcornersList[y]
         break
@@ -139,7 +137,6 @@ previousrowY = 522
 startpt = 0
 row = 16
 for answer in xrange(len(answersOfcol1XY) ):
-    print answersOfcol1XY[answer][1]
     if(not(answersOfcol1XY[answer][1] > previousrowY - 2 and answersOfcol1XY[answer][1] < previousrowY + 2)):
         startpt += 1
         row -= 1
@@ -157,7 +154,6 @@ for answer in xrange(len(answersOfcol1XY) ):
 
 
 
-print answersOfcol1
 
 
 #in Col2
@@ -179,7 +175,6 @@ img3,contourss2, hierarchys = cv2.findContours(afterbitwise3,cv2.RETR_TREE,cv2.C
 for cont in contourss2:
     (x,y),radius = cv2.minEnclosingCircle(cont)
     if int(radius) > 5 and int(radius) < 8:
-        print x , y
         cv2.circle(col2rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol2XY.append([x,y])
 
@@ -189,7 +184,6 @@ previousrowYcol2 = 522
 startptcol2 = 0
 rowcol2 = 31
 for answer in xrange(len(answersOfcol2XY) ):
-    print answersOfcol2XY[answer][1]
     if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 2 and answersOfcol2XY[answer][1] < previousrowYcol2 + 2)):
         startptcol2 += 1
         rowcol2 -= 1
@@ -207,7 +201,6 @@ for answer in xrange(len(answersOfcol2XY) ):
 
 
 
-print answersOfcol2
 
 
 #in Col3
@@ -229,7 +222,6 @@ img3,contourss3, hierarchys = cv2.findContours(afterbitwise4,cv2.RETR_TREE,cv2.C
 for cont in contourss3:
     (x,y),radius = cv2.minEnclosingCircle(cont)
     if int(radius) > 5 and int(radius) < 8:
-        print x , y
         cv2.circle(col3rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol3XY.append([x,y])
 
@@ -239,7 +231,6 @@ previousrowYcol3 = 518
 startptcol3 = 0
 rowcol3 = 46
 for answer in xrange(len(answersOfcol3XY) ):
-    print answersOfcol3XY[answer][1]
     if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 2 and answersOfcol3XY[answer][1] < previousrowYcol3 + 2)):
         startptcol3 += 1
         rowcol3 -= 1
@@ -255,18 +246,71 @@ for answer in xrange(len(answersOfcol3XY) ):
         answersOfcol3.append([rowcol3 ,'Err'])
     previousrowYcol3 = answersOfcol3XY[answer][1]
 
+#in col of ID
+col4rect = cv2.resize(col4rect, (0,0), fx=2, fy=2)
+
+col4rect = cv2.cvtColor(col4rect,cv2.COLOR_RGB2GRAY)
+aftergauss5 = cv2.GaussianBlur(col4rect,(3,3),0)
+afterthreshold5 = cv2.adaptiveThreshold(aftergauss5,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
+afterbitwise5 = cv2.bitwise_not( afterthreshold5)
+kernel_Abigg = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10))
+kernel_Abigg2 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8,8))
+
+afterbitwise5 = cv2.erode(afterbitwise5,kernel_Abigg)
+afterbitwise5 = cv2.dilate(afterbitwise5,kernel_Abigg2)
+
+cv2.imshow("rkkow4th",afterbitwise5)
+
+idNumList = []
+
+img3,contourss4, hierarchys = cv2.findContours(afterbitwise5,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+for cont in contourss4:
+    (x,y),radius = cv2.minEnclosingCircle(cont)
+    if int(radius) > 5 and int(radius) < 8:
+        print x ,y
+        cv2.circle(col4rect,(int(x),int(y)),3,(0,255,255),3)
+        idNumList.append([x,y])
 
 
-print answersOfcol3
-print '-----'
+cv2.imshow("rkkow4",col4rect)
+sortedidNumList = sorted(idNumList,key=lambda l:l[0])
+numberofID = []
+print  sortedidNumList
+for num in xrange(len(sortedidNumList)):
+    if(sortedidNumList[num][0] >84 and sortedidNumList[num][0] < 200 and  sortedidNumList[num][1] > 86 and sortedidNumList[num][1] < 438):
+        if(sortedidNumList[num][1] >193 and sortedidNumList[num][1] < 201 ):
+            numberofID.append(1)
+        elif(sortedidNumList[num][1] >220 and sortedidNumList[num][1] < 228 ):
+            numberofID.append(2)
+        elif (sortedidNumList[num][1] >246 and sortedidNumList[num][1] < 254 ):
+            numberofID.append(3)
+        elif (sortedidNumList[num][1] >272 and sortedidNumList[num][1] < 280 ):
+            numberofID.append(4)
+        elif (sortedidNumList[num][1] >298 and sortedidNumList[num][1] < 306 ):
+            numberofID.append(5)
+        elif (sortedidNumList[num][1] >325 and sortedidNumList[num][1] < 333 ):
+            numberofID.append(6)
+        elif (sortedidNumList[num][1] >351 and sortedidNumList[num][1] < 359 ):
+            numberofID.append(7)
+        elif (sortedidNumList[num][1] >377 and sortedidNumList[num][1] < 385 ):
+            numberofID.append(8)
+        elif (sortedidNumList[num][1] >403 and sortedidNumList[num][1] < 411 ):
+            numberofID.append(9)
+        elif (sortedidNumList[num][1] >430 and sortedidNumList[num][1] < 438 ):
+            numberofID.append(0)
+
+def listtost(numList):
+    s = map(str, numList)   # ['1','2','3']
+    s = ''.join(s)          # '123'
+    return s
+print listtost(numberofID)
+
 
 #Answers
 answers= []
 answers = answersOfcol3 + answersOfcol2 + answersOfcol1
-print answers
 finalanswrswithouterr = []
 for answer in xrange(len(answers)):
-    print answers[answer][1]
     if(not(answers[answer][1] == 'Err')):
         finalanswrswithouterr.append([answers[answer][0],answers[answer][1]])
 
