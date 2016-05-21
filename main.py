@@ -29,10 +29,12 @@ xyofBigCirles = []
 img3,contourssss, hierarchys = cv2.findContours(erodededtofindrotate,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourssss:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    print x , y
+    print "xyofBigCirles", x , y
     cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
     xyofBigCirles.append([int(x),int(y)])
-angle =   math.atan2((xyofBigCirles[1][1]-xyofBigCirles[0][1]),(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi
+angle =  math.atan2((xyofBigCirles[1][1]-xyofBigCirles[0][1]),(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi
+# if(angle <= -90.0):
+#     angle = 180.0 - angle
 print 'angle' , angle
 r = cv2.getRotationMatrix2D((small3.shape[0]/2.,small3.shape[0]/2.),angle,1.0)
 newimage = cv2.warpAffine(small3,r,(small3.shape[0],small3.shape[0]))
@@ -40,6 +42,8 @@ newimage = cv2.warpAffine(small3,r,(small3.shape[0],small3.shape[0]))
 small3 = cv2.warpAffine(small3,r,(small3.shape[0],small3.shape[0]))
 small2 = cv2.warpAffine(small2,r,(small3.shape[0],small3.shape[0]))
 small = cv2.warpAffine(small,r,(small3.shape[0],small3.shape[0]))
+erodededtofindrotate = cv2.warpAffine(erodededtofindrotate,r,(erodededtofindrotate.shape[0],erodededtofindrotate.shape[0]))
+
 
 afterbitwise = cv2.warpAffine(afterbitwise,r,(small3.shape[0],small3.shape[0]))
 
@@ -48,7 +52,30 @@ cv2.imshow('afterbitwisenew',afterbitwise)
 
 cv2.imshow("real on",small3)
 
+#Translation image to pointX,Y reference xyofBigCirles 88.5208358765 617.958312988
+xyofBigCirles = []
+img3,contourssssd, hierarchys = cv2.findContours(erodededtofindrotate,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+for cont in contourssssd:
+    (x,y),radius = cv2.minEnclosingCircle(cont)
+    print "newxyofBigCirles", x , y
+    cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
+    xyofBigCirles.append([int(x),int(y)])
 
+def translateimage(imgorginal,Tx,Ty):
+    #rows,cols = imgorginal.shape
+    M = np.float32([[1,0,Tx],[0,1,Ty]])
+    dst = cv2.warpAffine(imgorginal,M,(imgorginal.shape[0],imgorginal.shape[1]))
+    return dst
+#Sort xyofBigCirles
+xyofBigCirles = sorted(xyofBigCirles,key=lambda l:l[0])
+xyofBigCirles.reverse()
+
+small3 = translateimage(small3,88.5208358765-xyofBigCirles[1][0],617.958312988-xyofBigCirles[1][1])
+small2 = translateimage(small2,88.5208358765-xyofBigCirles[1][0],617.958312988-xyofBigCirles[1][1])
+small = translateimage(small,88.5208358765-xyofBigCirles[1][0],617.958312988-xyofBigCirles[1][1])
+afterbitwise = translateimage(afterbitwise,88.5208358765-xyofBigCirles[1][0],617.958312988-xyofBigCirles[1][1])
+
+#Hough Lines
 torgb = cv2.cvtColor(afterbitwise,cv2.COLOR_GRAY2BGR)
 borders = cv2.HoughLinesP(afterbitwise,1, np.pi / 180 ,80,400,10).tolist()
 #borders = cv2.HoughLinesP(afterbitwise,1,np.pi/180,275, minLineLength = 600, maxLineGap = 100)[0].tolist()
@@ -90,10 +117,15 @@ XcornerList.reverse()
 YcornersList.sort()
 YcornersList.reverse()
 
-Ymaxcorner = max(YcornersList)
-Xmaxcorner = max(XcornerList)
-Ymincorner = min(YcornersList)
-Xmincorner = min(XcornerList)
+Ymaxcorner =  577
+print "Ymax", max(YcornersList) #
+Xmaxcorner = 438
+print "Xmax", max(XcornerList) #
+Ymincorner = 45
+print "Ymin", min(YcornersList) #
+Xmincorner = 40
+print "Xmin", min(XcornerList) #
+
 cv2.circle(small2,(Xmincorner,Ymincorner),2,(255,0,255),2)
 cv2.circle(small2,(Xmincorner,Ymaxcorner),2,(255,0,255),2)
 cv2.circle(small2,(Xmaxcorner,Ymaxcorner),2,(255,0,255),2)
@@ -320,9 +352,9 @@ for cont in contourss4:
 cv2.imshow("rkkow4",col4rect)
 sortedidNumList = sorted(idNumList,key=lambda l:l[0])
 numberofID = []
-print  sortedidNumList
+print "sortedidNumList", sortedidNumList
 for num in xrange(len(sortedidNumList)):
-    if(sortedidNumList[num][0] >84 and sortedidNumList[num][0] < 200 and  sortedidNumList[num][1] > 86 and sortedidNumList[num][1] < 438):
+    if(sortedidNumList[num][0] >84 and sortedidNumList[num][0] < 205 and  sortedidNumList[num][1] > 86 and sortedidNumList[num][1] < 438):
         if(sortedidNumList[num][1] >193 and sortedidNumList[num][1] < 201 ):
             numberofID.append(1)
         elif(sortedidNumList[num][1] >220 and sortedidNumList[num][1] < 228 ):
@@ -331,9 +363,9 @@ for num in xrange(len(sortedidNumList)):
             numberofID.append(3)
         elif (sortedidNumList[num][1] >272 and sortedidNumList[num][1] < 280 ):
             numberofID.append(4)
-        elif (sortedidNumList[num][1] >298 and sortedidNumList[num][1] < 306 ):
+        elif (sortedidNumList[num][1] >298 and sortedidNumList[num][1] < 308 ):
             numberofID.append(5)
-        elif (sortedidNumList[num][1] >325 and sortedidNumList[num][1] < 333 ):
+        elif (sortedidNumList[num][1] >325 and sortedidNumList[num][1] < 334 ):
             numberofID.append(6)
         elif (sortedidNumList[num][1] >351 and sortedidNumList[num][1] < 359 ):
             numberofID.append(7)
@@ -348,7 +380,7 @@ def listtost(numList):
     s = map(str, numList)   # ['1','2','3']
     s = ''.join(s)          # '123'
     return s
-print listtost(numberofID)
+print "ID" , listtost(numberofID)
 
 
 #Answers
@@ -359,7 +391,7 @@ for answer in xrange(len(answers)):
     if(not(answers[answer][1] == 'Err')):
         finalanswrswithouterr.append([answers[answer][0],answers[answer][1]])
 
-print finalanswrswithouterr
+print "finalanswrs" ,finalanswrswithouterr
 #to get the targets by using hough transform in circle
 # targets = cv2.HoughCircles(small,cv2.HOUGH_GRADIENT,1,10,param1=50,param2=30,minRadius=0,maxRadius=0)
 #
