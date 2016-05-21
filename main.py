@@ -4,7 +4,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcaserot.jpg'
+imgdir = 'testcase.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -33,8 +33,13 @@ for cont in contourssss:
     cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
     xyofBigCirles.append([int(x),int(y)])
 angle =  math.atan2((xyofBigCirles[1][1]-xyofBigCirles[0][1]),(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi
+#if image overturned
+if(xyofBigCirles[0][1] < erodededtofindrotate.shape[1] and  xyofBigCirles[1][1] < erodededtofindrotate.shape[1] ):
+    angle = 180 + angle
+
 if(angle <= -90.0):
  angle = 180.0 + angle
+
 
 print 'angle' , angle
 r = cv2.getRotationMatrix2D((small3.shape[0]/2.,small3.shape[0]/2.),angle,1.0)
