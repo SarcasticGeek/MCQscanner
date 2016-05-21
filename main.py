@@ -4,7 +4,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcase.jpg'
+imgdir = 'testcaserot.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -21,18 +21,30 @@ afterthreshold = cv2.adaptiveThreshold(aftergauss,255,cv2.ADAPTIVE_THRESH_GAUSSI
 afterbitwise = cv2.bitwise_not( afterthreshold)
 cv2.imshow("kk",afterbitwise)
 #Rotate image
+kernel_Abig = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(18,18))
+erodededtofindrotate = cv2.erode(afterbitwise,kernel_Abig)
+cv2.imshow("erodededtofindrotate",erodededtofindrotate)
+
 xyofBigCirles = []
-img3,contourssss, hierarchys = cv2.findContours(afterbitwise,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+img3,contourssss, hierarchys = cv2.findContours(erodededtofindrotate,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourssss:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    if int(radius) == 16 and int(y) > (3 * small3.shape[1])/4:
-        cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
-        xyofBigCirles.append([int(x),int(y)])
-angle = int(math.atan((xyofBigCirles[0][1]-xyofBigCirles[1][1])/(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi)
+    print x , y
+    cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
+    xyofBigCirles.append([int(x),int(y)])
+angle =   math.atan2((xyofBigCirles[1][1]-xyofBigCirles[0][1]),(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi
 print 'angle' , angle
 r = cv2.getRotationMatrix2D((small3.shape[0]/2.,small3.shape[0]/2.),angle,1.0)
 newimage = cv2.warpAffine(small3,r,(small3.shape[0],small3.shape[0]))
+#newimage = cv2.resize(newimage,(small.shape[0],small.shape[1]),0,0,cv2.INTER_NEAREST)
+small3 = cv2.warpAffine(small3,r,(small3.shape[0],small3.shape[0]))
+small2 = cv2.warpAffine(small2,r,(small3.shape[0],small3.shape[0]))
+small = cv2.warpAffine(small,r,(small3.shape[0],small3.shape[0]))
+
+afterbitwise = cv2.warpAffine(afterbitwise,r,(small3.shape[0],small3.shape[0]))
+
 cv2.imshow('newimage',newimage)
+cv2.imshow('afterbitwisenew',afterbitwise)
 
 cv2.imshow("real on",small3)
 
@@ -82,10 +94,10 @@ Ymaxcorner = max(YcornersList)
 Xmaxcorner = max(XcornerList)
 Ymincorner = min(YcornersList)
 Xmincorner = min(XcornerList)
-cv2.circle(small2,(Xmincorner,Ymincorner),2,(255,0,0),2)
-cv2.circle(small2,(Xmincorner,Ymaxcorner),2,(255,0,0),2)
-cv2.circle(small2,(Xmaxcorner,Ymaxcorner),2,(255,0,0),2)
-cv2.circle(small2,(Xmaxcorner,Ymincorner),2,(255,0,0),2)
+cv2.circle(small2,(Xmincorner,Ymincorner),2,(255,0,255),2)
+cv2.circle(small2,(Xmincorner,Ymaxcorner),2,(255,0,255),2)
+cv2.circle(small2,(Xmaxcorner,Ymaxcorner),2,(255,0,255),2)
+cv2.circle(small2,(Xmaxcorner,Ymincorner),2,(255,0,255),2)
 
 distofbelowcorner = ecliduan(Xmincorner,Xmaxcorner,Ymaxcorner,Ymaxcorner)
 widthOfanswerRow = distofbelowcorner/3
@@ -144,6 +156,9 @@ cv2.imshow("rkkow1th",afterbitwise2)
 
 answersOfcol1XY = []
 answersOfcol1 = []
+# for drawcirclie in range(70,547,32):
+#     print drawcirclie
+#     cv2.circle(afterbitwise2,(220,drawcirclie),4,(255,255,255),3)
 
 img3,contourss, hierarchys = cv2.findContours(afterbitwise2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss:
@@ -191,6 +206,9 @@ cv2.imshow("rkkow2th",afterbitwise3)
 
 answersOfcol2XY = []
 answersOfcol2 = []
+# for drawcirclie in range(70,547,32):
+#     print drawcirclie
+#     cv2.circle(afterbitwise3,(220,drawcirclie),4,(255,255,255),3)
 
 img3,contourss2, hierarchys = cv2.findContours(afterbitwise3,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss2:
@@ -238,11 +256,17 @@ cv2.imshow("rkkow3th",afterbitwise4)
 
 answersOfcol3XY = []
 answersOfcol3 = []
+# for drawcirclie in range(70,547,32):
+#     print drawcirclie
+#     cv2.circle(afterbitwise4,(220,drawcirclie),4,(255,255,255),3)
+
+cv2.imshow("befrkkow3",afterbitwise4)
 
 img3,contourss3, hierarchys = cv2.findContours(afterbitwise4,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss3:
     (x,y),radius = cv2.minEnclosingCircle(cont)
     if int(radius) > 5 and int(radius) < 8:
+        print 'col3' ,  y
         cv2.circle(col3rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol3XY.append([x,y])
 
