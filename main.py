@@ -4,7 +4,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcase.jpg'
+imgdir = 'testcaserot.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -19,11 +19,11 @@ aftergauss = cv2.GaussianBlur(greysmall,(11,11),0)
 
 afterthreshold = cv2.adaptiveThreshold(aftergauss,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
 afterbitwise = cv2.bitwise_not( afterthreshold)
-cv2.imshow("kk",afterbitwise)
+cv2.imshow("1_afterthreshold",afterbitwise)
 #Rotate image
 kernel_Abig = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(18,18))
 erodededtofindrotate = cv2.erode(afterbitwise,kernel_Abig)
-cv2.imshow("erodededtofindrotate",erodededtofindrotate)
+cv2.imshow("2_erodededtofindrotate",erodededtofindrotate)
 
 xyofBigCirles = []
 img3,contourssss, hierarchys = cv2.findContours(erodededtofindrotate,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
@@ -53,10 +53,9 @@ erodededtofindrotate = cv2.warpAffine(erodededtofindrotate,r,(erodededtofindrota
 
 afterbitwise = cv2.warpAffine(afterbitwise,r,(small3.shape[0],small3.shape[0]))
 
-cv2.imshow('newimage',newimage)
-cv2.imshow('afterbitwisenew',afterbitwise)
+cv2.imshow('3_imageafterrotating',newimage)
+cv2.imshow('4_afterbitwise_imageafterrotating',afterbitwise)
 
-cv2.imshow("real on",small3)
 
 #Translation image to pointX,Y reference xyofBigCirles 88.5208358765 617.958312988
 xyofBigCirles = []
@@ -155,28 +154,28 @@ y2col1 = Ymaxcorner
 x1col1 = Xmincorner
 x2col1 = Xmincorner + widthOfanswerRow
 col1rect = small[y1col1:y2col1, x1col1:x2col1]
-cv2.imshow("col1",col1rect)
+cv2.imshow("5_Col1ofAnswers",col1rect)
 #Col 2 of Answers
 y1col2 = YofcornerOfanswercol
 y2col2 = Ymaxcorner
 x1col2 = Xmincorner + widthOfanswerRow
 x2col2 = Xmaxcorner - widthOfanswerRow
 col2rect = small[y1col2:y2col2, x1col2:x2col2]
-cv2.imshow("col2",col2rect)
+cv2.imshow("6_Col2ofAnswers",col2rect)
 #Col 3 of Answers
 y1col3 = YofcornerOfanswercol
 y2col3 = Ymaxcorner
 x1col3 = Xmaxcorner - widthOfanswerRow
 x2col3 = Xmaxcorner
 col3rect = small[y1col3:y2col3, x1col3:x2col3]
-cv2.imshow("col3",col3rect)
+cv2.imshow("7_Col3ofAnswers",col3rect)
 #Col of ID
 y1col4 = Ymincorner
 y2col4 = YofcornerOfanswercol
 x1col4 = Xmaxcorner - widthOfanswerRow
 x2col4 = Xmaxcorner
 col4rect = small[y1col4:y2col4, x1col4:x2col4]
-cv2.imshow("col4",col4rect)
+cv2.imshow("8_ColIDofAnswers",col4rect)
 
 #in Col1
 col1rect = cv2.resize(col1rect, (0,0), fx=2, fy=2)
@@ -190,7 +189,7 @@ afterbitwise2 = cv2.erode(afterbitwise2,kernel_Abig)
 kernel_Abig1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 afterbitwise2 = cv2.dilate(afterbitwise2,kernel_Abig1)
 
-cv2.imshow("rkkow1th",afterbitwise2)
+cv2.imshow("9_ThresholdCol1ofAnswers",afterbitwise2)
 
 answersOfcol1XY = []
 answersOfcol1 = []
@@ -206,7 +205,7 @@ for cont in contourss:
         answersOfcol1XY.append([x,y])
 
 
-cv2.imshow("rkkow1",col1rect)
+cv2.imshow("10_ThresholdCol1ofAnswersDetectAnswers",col1rect)
 previousrowY = 522
 startpt = 0
 row = 16
@@ -240,7 +239,7 @@ afterbitwise3 = cv2.bitwise_not( afterthreshold3)
 afterbitwise3 = cv2.erode(afterbitwise3,kernel_Abig)
 afterbitwise3 = cv2.dilate(afterbitwise3,kernel_Abig1)
 
-cv2.imshow("rkkow2th",afterbitwise3)
+cv2.imshow("11_ThresholdCol2ofAnswers",afterbitwise3)
 
 answersOfcol2XY = []
 answersOfcol2 = []
@@ -256,7 +255,7 @@ for cont in contourss2:
         answersOfcol2XY.append([x,y])
 
 
-cv2.imshow("rkkow2",col2rect)
+cv2.imshow("12_ThresholdCol2ofAnswersDetectAnswers",col2rect)
 previousrowYcol2 = 522
 startptcol2 = 0
 rowcol2 = 31
@@ -290,7 +289,7 @@ afterbitwise4 = cv2.bitwise_not( afterthreshold4)
 afterbitwise4 = cv2.erode(afterbitwise4,kernel_Abig)
 afterbitwise4 = cv2.dilate(afterbitwise4,kernel_Abig1)
 
-cv2.imshow("rkkow3th",afterbitwise4)
+cv2.imshow("13_ThresholdCol3ofAnswers",afterbitwise4)
 
 answersOfcol3XY = []
 answersOfcol3 = []
@@ -298,7 +297,7 @@ answersOfcol3 = []
 #     print drawcirclie
 #     cv2.circle(afterbitwise4,(220,drawcirclie),4,(255,255,255),3)
 
-cv2.imshow("befrkkow3",afterbitwise4)
+cv2.imshow("14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage",afterbitwise4)
 
 img3,contourss3, hierarchys = cv2.findContours(afterbitwise4,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss3:
@@ -309,7 +308,7 @@ for cont in contourss3:
         answersOfcol3XY.append([x,y])
 
 
-cv2.imshow("rkkow3",col3rect)
+cv2.imshow("15_Col3ofAnswersDetectAnswersplusdrawImage",col3rect)
 previousrowYcol3 = 518
 startptcol3 = 0
 rowcol3 = 46
@@ -342,7 +341,7 @@ kernel_Abigg2 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8,8))
 afterbitwise5 = cv2.erode(afterbitwise5,kernel_Abigg)
 afterbitwise5 = cv2.dilate(afterbitwise5,kernel_Abigg2)
 
-cv2.imshow("rkkow4th",afterbitwise5)
+cv2.imshow("16_ThresholdColIDofAnswers",afterbitwise5)
 
 idNumList = []
 
@@ -355,7 +354,7 @@ for cont in contourss4:
         idNumList.append([x,y])
 
 
-cv2.imshow("rkkow4",col4rect)
+cv2.imshow("17_ThresholdColIDofAnswersDetectID",col4rect)
 sortedidNumList = sorted(idNumList,key=lambda l:l[0])
 numberofID = []
 print "sortedidNumList", sortedidNumList
@@ -398,18 +397,6 @@ for answer in xrange(len(answers)):
         finalanswrswithouterr.append([answers[answer][0],answers[answer][1]])
 
 print "finalanswrs" ,finalanswrswithouterr
-#to get the targets by using hough transform in circle
-# targets = cv2.HoughCircles(small,cv2.HOUGH_GRADIENT,1,10,param1=50,param2=30,minRadius=0,maxRadius=0)
-#
-# targets = np.uint16(np.around(targets))
-# locationsoftargets= [] #locatin of x ,y of targets
-# numberoftargets = 0 #counter of number of targets
-# for target in targets[0,:]:
-#     if target[2] < 20:
-#         cv2.circle(small2,(target[0],target[1]),2,(0,0,255),3)
-cv2.imshow("shouo",afterbitwise)
-
-cv2.imshow("shoo",small2)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
