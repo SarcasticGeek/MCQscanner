@@ -1,3 +1,8 @@
+"""
+Author: Mohamed Essam Fathalla Mohamed
+mail: mohamedessamfathalla@gmail.com
+Title: MCQ scanner
+"""
 import cv2
 import numpy as np
 import  math
@@ -20,6 +25,7 @@ aftergauss = cv2.GaussianBlur(greysmall,(11,11),0)
 afterthreshold = cv2.adaptiveThreshold(aftergauss,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
 afterbitwise = cv2.bitwise_not( afterthreshold)
 cv2.imshow("1_afterthreshold",afterbitwise)
+cv2.imwrite("1_afterthreshold",afterbitwise)
 #Rotate image
 kernel_Abig = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(18,18))
 erodededtofindrotate = cv2.erode(afterbitwise,kernel_Abig)
@@ -211,12 +217,13 @@ cv2.imshow("10_ThresholdCol1ofAnswersDetectAnswers",col1rect)
 previousrowY = 522
 startpt = 0
 row = 16
+print "answersOfcol1XY" ,answersOfcol1XY
 for answer in xrange(len(answersOfcol1XY) ):
     if(answersOfcol1XY[answer][1] > 60 ):
-        if(not(answersOfcol1XY[answer][1] > previousrowY - 4 and answersOfcol1XY[answer][1] < previousrowY + 4)):
+        if(not(answersOfcol1XY[answer][1] > previousrowY - 5 and answersOfcol1XY[answer][1] < previousrowY + 5)):
             startpt += 1
             row -= 1
-        if(answersOfcol1XY[answer][0] > 100 and answersOfcol1XY[answer][0] < 103 ):
+        if(answersOfcol1XY[answer][0] > 98 and answersOfcol1XY[answer][0] < 109 ):
             answersOfcol1.append([row ,'A'])
         elif(answersOfcol1XY[answer][0] > 131 and answersOfcol1XY[answer][0] < 135 ):
             answersOfcol1.append([row ,'B'])
