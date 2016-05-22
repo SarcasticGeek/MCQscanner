@@ -9,7 +9,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcase2.jpg'
+imgdir = 'testcaserot.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -25,11 +25,12 @@ aftergauss = cv2.GaussianBlur(greysmall,(11,11),0)
 afterthreshold = cv2.adaptiveThreshold(aftergauss,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
 afterbitwise = cv2.bitwise_not( afterthreshold)
 cv2.imshow("1_afterthreshold",afterbitwise)
-cv2.imwrite("1_afterthreshold",afterbitwise)
+cv2.imwrite("dist/1_afterthreshold.jpg",afterbitwise)
 #Rotate image
 kernel_Abig = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(18,18))
 erodededtofindrotate = cv2.erode(afterbitwise,kernel_Abig)
 cv2.imshow("2_erodededtofindrotate",erodededtofindrotate)
+cv2.imwrite("dist/2_erodededtofindrotate.jpg",erodededtofindrotate)
 
 xyofBigCirles = []
 img3,contourssss, hierarchys = cv2.findContours(erodededtofindrotate,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
@@ -60,7 +61,10 @@ erodededtofindrotate = cv2.warpAffine(erodededtofindrotate,r,(erodededtofindrota
 afterbitwise = cv2.warpAffine(afterbitwise,r,(small3.shape[0],small3.shape[0]))
 
 cv2.imshow('3_imageafterrotating',newimage)
+cv2.imwrite("dist/3_imageafterrotating.jpg",newimage)
+
 cv2.imshow('4_afterbitwise_imageafterrotating',afterbitwise)
+cv2.imwrite("dist/4_afterbitwise_imageafterrotating.jpg",afterbitwise)
 
 
 #Translation image to pointX,Y reference xyofBigCirles 88.5208358765 617.958312988
@@ -161,6 +165,8 @@ x1col1 = Xmincorner
 x2col1 = Xmincorner + widthOfanswerRow
 col1rect = small[y1col1:y2col1, x1col1:x2col1]
 cv2.imshow("5_Col1ofAnswers",col1rect)
+cv2.imwrite("dist/5_Col1ofAnswers.jpg",col1rect)
+
 #Col 2 of Answers
 y1col2 = YofcornerOfanswercol
 y2col2 = Ymaxcorner
@@ -168,6 +174,8 @@ x1col2 = Xmincorner + widthOfanswerRow
 x2col2 = Xmaxcorner - widthOfanswerRow
 col2rect = small[y1col2:y2col2, x1col2:x2col2]
 cv2.imshow("6_Col2ofAnswers",col2rect)
+cv2.imwrite("dist/6_Col2ofAnswers.jpg",col2rect)
+
 #Col 3 of Answers
 y1col3 = YofcornerOfanswercol
 y2col3 = Ymaxcorner
@@ -175,6 +183,8 @@ x1col3 = Xmaxcorner - widthOfanswerRow
 x2col3 = Xmaxcorner
 col3rect = small[y1col3:y2col3, x1col3:x2col3]
 cv2.imshow("7_Col3ofAnswers",col3rect)
+cv2.imwrite("dist/7_Col3ofAnswers.jpg",col3rect)
+
 #Col of ID
 y1col4 = Ymincorner
 y2col4 = YofcornerOfanswercol
@@ -182,6 +192,7 @@ x1col4 = Xmaxcorner - widthOfanswerRow
 x2col4 = Xmaxcorner
 col4rect = small[y1col4:y2col4, x1col4:x2col4]
 cv2.imshow("8_ColIDofAnswers",col4rect)
+cv2.imwrite("dist/8_ColIDofAnswers.jpg",col4rect)
 
 #in Col1
 col1rect = cv2.resize(col1rect, (0,0), fx=2, fy=2)
@@ -196,6 +207,7 @@ kernel_Abig1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 afterbitwise2 = cv2.dilate(afterbitwise2,kernel_Abig1)
 
 cv2.imshow("9_ThresholdCol1ofAnswers",afterbitwise2)
+cv2.imwrite("dist/9_ThresholdCol1ofAnswers.jpg",afterbitwise2)
 
 answersOfcol1XY = []
 answersOfcol1 = []
@@ -214,6 +226,8 @@ for cont in contourss:
 
 
 cv2.imshow("10_ThresholdCol1ofAnswersDetectAnswers",col1rect)
+cv2.imwrite("dist/10_ThresholdCol1ofAnswersDetectAnswers.jpg",col1rect)
+
 previousrowY = 522
 startpt = 0
 row = 16
@@ -225,7 +239,7 @@ for answer in xrange(len(answersOfcol1XY) ):
             row -= 1
         if(answersOfcol1XY[answer][0] > 98 and answersOfcol1XY[answer][0] < 109 ):
             answersOfcol1.append([row ,'A'])
-        elif(answersOfcol1XY[answer][0] > 131 and answersOfcol1XY[answer][0] < 135 ):
+        elif(answersOfcol1XY[answer][0] > 126 and answersOfcol1XY[answer][0] < 138 ):
             answersOfcol1.append([row ,'B'])
         elif(answersOfcol1XY[answer][0] > 163 and answersOfcol1XY[answer][0] < 168 ):
             answersOfcol1.append([row ,'C'])
@@ -250,6 +264,8 @@ afterbitwise3 = cv2.erode(afterbitwise3,kernel_Abig)
 afterbitwise3 = cv2.dilate(afterbitwise3,kernel_Abig1)
 
 cv2.imshow("11_ThresholdCol2ofAnswers",afterbitwise3)
+cv2.imwrite("dist/11_ThresholdCol2ofAnswers.jpg",afterbitwise3)
+
 
 answersOfcol2XY = []
 answersOfcol2 = []
@@ -266,6 +282,8 @@ for cont in contourss2:
 
 
 cv2.imshow("12_ThresholdCol2ofAnswersDetectAnswers",col2rect)
+cv2.imwrite("dist/12_ThresholdCol2ofAnswersDetectAnswers.jpg",col2rect)
+
 previousrowYcol2 = 522
 startptcol2 = 0
 rowcol2 = 31
@@ -302,6 +320,7 @@ afterbitwise4 = cv2.erode(afterbitwise4,kernel_Abig)
 afterbitwise4 = cv2.dilate(afterbitwise4,kernel_Abig1)
 
 cv2.imshow("13_ThresholdCol3ofAnswers",afterbitwise4)
+cv2.imwrite("dist/13_ThresholdCol3ofAnswers.jpg",afterbitwise4)
 
 answersOfcol3XY = []
 answersOfcol3 = []
@@ -310,6 +329,7 @@ for drawcirclie in range(102,551,32):
     cv2.circle(afterbitwise4,(220,drawcirclie),6,(255,255,255),2)
 
 cv2.imshow("14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage",afterbitwise4)
+cv2.imwrite("dist/14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage.jpg",afterbitwise4)
 
 img3,contourss3, hierarchys = cv2.findContours(afterbitwise4,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss3:
@@ -321,6 +341,8 @@ for cont in contourss3:
 
 
 cv2.imshow("15_Col3ofAnswersDetectAnswersplusdrawImage",col3rect)
+cv2.imwrite("dist/15_Col3ofAnswersDetectAnswersplusdrawImage.jpg",col3rect)
+
 previousrowYcol3 = 518
 startptcol3 = 0
 rowcol3 = 46
@@ -357,6 +379,7 @@ afterbitwise5 = cv2.erode(afterbitwise5,kernel_Abigg)
 afterbitwise5 = cv2.dilate(afterbitwise5,kernel_Abigg2)
 
 cv2.imshow("16_ThresholdColIDofAnswers",afterbitwise5)
+cv2.imwrite("dist/16_ThresholdColIDofAnswers.jpg",afterbitwise5)
 
 idNumList = []
 
@@ -370,6 +393,8 @@ for cont in contourss4:
 
 
 cv2.imshow("17_ThresholdColIDofAnswersDetectID",col4rect)
+cv2.imwrite("dist/17_ThresholdColIDofAnswersDetectID.jpg",col4rect)
+
 sortedidNumList = sorted(idNumList,key=lambda l:l[0])
 numberofID = []
 print "sortedidNumList", sortedidNumList
@@ -412,6 +437,25 @@ for answer in xrange(len(answers)):
         finalanswrswithouterr.append([answers[answer][0],answers[answer][1]])
 
 print "finalanswrs" ,finalanswrswithouterr
+
+#for printing on file
+fo = open("output.txt", "wb")
+fo.write(  "ID:\n")
+fo.write(listtost(numberofID))
+fo.write("\n")
+fo.write("Answers:\n")
+fo.write("\n")
+for ans in finalanswrswithouterr:
+    fo.write(str(ans[0]))
+    fo.write(" : ")
+    fo.write(str(ans[1]))
+    fo.write("\n")
+fo.close()
+
+
+
+
+
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
