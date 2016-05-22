@@ -4,7 +4,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcaserot.jpg'
+imgdir = 'testcase2.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -193,9 +193,11 @@ cv2.imshow("9_ThresholdCol1ofAnswers",afterbitwise2)
 
 answersOfcol1XY = []
 answersOfcol1 = []
-# for drawcirclie in range(70,547,32):
-#     print drawcirclie
-#     cv2.circle(afterbitwise2,(220,drawcirclie),4,(255,255,255),3)
+for drawcirclie in range(102,551,32):
+    print drawcirclie
+    cv2.circle(afterbitwise2,(220,drawcirclie),6,(255,255,255),1)
+
+cv2.imshow("demo",afterbitwise2)
 
 img3,contourss, hierarchys = cv2.findContours(afterbitwise2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss:
@@ -210,8 +212,8 @@ previousrowY = 522
 startpt = 0
 row = 16
 for answer in xrange(len(answersOfcol1XY) ):
-    if(answersOfcol1XY[answer][1] > 70 ):
-        if(not(answersOfcol1XY[answer][1] > previousrowY - 2 and answersOfcol1XY[answer][1] < previousrowY + 2)):
+    if(answersOfcol1XY[answer][1] > 60 ):
+        if(not(answersOfcol1XY[answer][1] > previousrowY - 4 and answersOfcol1XY[answer][1] < previousrowY + 4)):
             startpt += 1
             row -= 1
         if(answersOfcol1XY[answer][0] > 100 and answersOfcol1XY[answer][0] < 103 ):
@@ -244,9 +246,9 @@ cv2.imshow("11_ThresholdCol2ofAnswers",afterbitwise3)
 
 answersOfcol2XY = []
 answersOfcol2 = []
-# for drawcirclie in range(70,547,32):
-#     print drawcirclie
-#     cv2.circle(afterbitwise3,(220,drawcirclie),4,(255,255,255),3)
+for drawcirclie in range(102,551,32):
+    print drawcirclie
+    cv2.circle(afterbitwise3,(220,drawcirclie),6,(255,255,255),1)
 
 img3,contourss2, hierarchys = cv2.findContours(afterbitwise3,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss2:
@@ -262,8 +264,8 @@ startptcol2 = 0
 rowcol2 = 31
 print "answersOfcol2XY" , answersOfcol2XY
 for answer in xrange(len(answersOfcol2XY) ):
-    if(answersOfcol2XY[answer][1] > 70 and answersOfcol2XY[answer][0] > 90 ):
-        if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 2 and answersOfcol2XY[answer][1] < previousrowYcol2 + 2)):
+    if(answersOfcol2XY[answer][1] > 60 ):
+        if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 4 and answersOfcol2XY[answer][1] < previousrowYcol2 + 4)):
             startptcol2 += 1
             rowcol2 -= 1
         if(answersOfcol2XY[answer][0] > 90 and answersOfcol2XY[answer][0] < 101 ):
@@ -296,9 +298,9 @@ cv2.imshow("13_ThresholdCol3ofAnswers",afterbitwise4)
 
 answersOfcol3XY = []
 answersOfcol3 = []
-# for drawcirclie in range(70,547,32):
-#     print drawcirclie
-#     cv2.circle(afterbitwise4,(220,drawcirclie),4,(255,255,255),3)
+for drawcirclie in range(102,551,32):
+    print drawcirclie
+    cv2.circle(afterbitwise4,(220,drawcirclie),6,(255,255,255),2)
 
 cv2.imshow("14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage",afterbitwise4)
 
@@ -315,9 +317,10 @@ cv2.imshow("15_Col3ofAnswersDetectAnswersplusdrawImage",col3rect)
 previousrowYcol3 = 518
 startptcol3 = 0
 rowcol3 = 46
+
 for answer in xrange(len(answersOfcol3XY) ):
-    if(answersOfcol3XY[answer][1] > 70 ):
-        if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 2 and answersOfcol3XY[answer][1] < previousrowYcol3 + 2)):
+    if(answersOfcol3XY[answer][1] > 60 and answersOfcol3XY[answer][1] < 560 ):
+        if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 4 and answersOfcol3XY[answer][1] < previousrowYcol3 + 4)):
             startptcol3 += 1
             rowcol3 -= 1
         if(answersOfcol3XY[answer][0] > 87 and answersOfcol3XY[answer][0] < 95 ):
@@ -331,6 +334,7 @@ for answer in xrange(len(answersOfcol3XY) ):
         else:
             answersOfcol3.append([rowcol3 ,'Err'])
         previousrowYcol3 = answersOfcol3XY[answer][1]
+
 
 #in col of ID
 col4rect = cv2.resize(col4rect, (0,0), fx=2, fy=2)
