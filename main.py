@@ -210,20 +210,21 @@ previousrowY = 522
 startpt = 0
 row = 16
 for answer in xrange(len(answersOfcol1XY) ):
-    if(not(answersOfcol1XY[answer][1] > previousrowY - 2 and answersOfcol1XY[answer][1] < previousrowY + 2)):
-        startpt += 1
-        row -= 1
-    if(answersOfcol1XY[answer][0] > 100 and answersOfcol1XY[answer][0] < 103 ):
-        answersOfcol1.append([row ,'A'])
-    elif(answersOfcol1XY[answer][0] > 131 and answersOfcol1XY[answer][0] < 135 ):
-        answersOfcol1.append([row ,'B'])
-    elif(answersOfcol1XY[answer][0] > 163 and answersOfcol1XY[answer][0] < 168 ):
-        answersOfcol1.append([row ,'C'])
-    elif(answersOfcol1XY[answer][0] > 195 and answersOfcol1XY[answer][0] < 200 ):
-        answersOfcol1.append([row ,'D'])
-    else:
-        answersOfcol1.append([row ,'Err'])
-    previousrowY = answersOfcol1XY[answer][1]
+    if(answersOfcol1XY[answer][1] > 70 ):
+        if(not(answersOfcol1XY[answer][1] > previousrowY - 2 and answersOfcol1XY[answer][1] < previousrowY + 2)):
+            startpt += 1
+            row -= 1
+        if(answersOfcol1XY[answer][0] > 100 and answersOfcol1XY[answer][0] < 103 ):
+            answersOfcol1.append([row ,'A'])
+        elif(answersOfcol1XY[answer][0] > 131 and answersOfcol1XY[answer][0] < 135 ):
+            answersOfcol1.append([row ,'B'])
+        elif(answersOfcol1XY[answer][0] > 163 and answersOfcol1XY[answer][0] < 168 ):
+            answersOfcol1.append([row ,'C'])
+        elif(answersOfcol1XY[answer][0] > 195 and answersOfcol1XY[answer][0] < 200 ):
+            answersOfcol1.append([row ,'D'])
+        else:
+            answersOfcol1.append([row ,'Err'])
+        previousrowY = answersOfcol1XY[answer][1]
 
 
 
@@ -259,21 +260,23 @@ cv2.imshow("12_ThresholdCol2ofAnswersDetectAnswers",col2rect)
 previousrowYcol2 = 522
 startptcol2 = 0
 rowcol2 = 31
+print "answersOfcol2XY" , answersOfcol2XY
 for answer in xrange(len(answersOfcol2XY) ):
-    if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 2 and answersOfcol2XY[answer][1] < previousrowYcol2 + 2)):
-        startptcol2 += 1
-        rowcol2 -= 1
-    if(answersOfcol2XY[answer][0] > 93 and answersOfcol2XY[answer][0] < 98 ):
-        answersOfcol2.append([rowcol2 ,'A'])
-    elif(answersOfcol2XY[answer][0] > 125 and answersOfcol2XY[answer][0] < 132 ):
-        answersOfcol2.append([rowcol2 ,'B'])
-    elif(answersOfcol2XY[answer][0] > 157 and answersOfcol2XY[answer][0] < 165 ):
-        answersOfcol2.append([rowcol2 ,'C'])
-    elif(answersOfcol2XY[answer][0] > 191 and answersOfcol2XY[answer][0] < 198 ):
-        answersOfcol2.append([rowcol2 ,'D'])
-    else:
-        answersOfcol2.append([rowcol2 ,'Err'])
-    previousrowYcol2 = answersOfcol2XY[answer][1]
+    if(answersOfcol2XY[answer][1] > 70 and answersOfcol2XY[answer][0] > 90 ):
+        if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 2 and answersOfcol2XY[answer][1] < previousrowYcol2 + 2)):
+            startptcol2 += 1
+            rowcol2 -= 1
+        if(answersOfcol2XY[answer][0] > 90 and answersOfcol2XY[answer][0] < 101 ):
+            answersOfcol2.append([rowcol2 ,'A'])
+        elif(answersOfcol2XY[answer][0] > 125 and answersOfcol2XY[answer][0] < 132 ):
+            answersOfcol2.append([rowcol2 ,'B'])
+        elif(answersOfcol2XY[answer][0] > 157 and answersOfcol2XY[answer][0] < 165 ):
+            answersOfcol2.append([rowcol2 ,'C'])
+        elif(answersOfcol2XY[answer][0] > 191 and answersOfcol2XY[answer][0] < 198 ):
+            answersOfcol2.append([rowcol2 ,'D'])
+        else:
+            answersOfcol2.append([rowcol2 ,'Err'])
+        previousrowYcol2 = answersOfcol2XY[answer][1]
 
 
 
@@ -313,20 +316,21 @@ previousrowYcol3 = 518
 startptcol3 = 0
 rowcol3 = 46
 for answer in xrange(len(answersOfcol3XY) ):
-    if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 2 and answersOfcol3XY[answer][1] < previousrowYcol3 + 2)):
-        startptcol3 += 1
-        rowcol3 -= 1
-    if(answersOfcol3XY[answer][0] > 87 and answersOfcol3XY[answer][0] < 95 ):
-        answersOfcol3.append([rowcol3 ,'A'])
-    elif(answersOfcol3XY[answer][0] > 120 and answersOfcol3XY[answer][0] < 128 ):
-        answersOfcol3.append([rowcol3 ,'B'])
-    elif(answersOfcol3XY[answer][0] > 153 and answersOfcol3XY[answer][0] < 161 ):
-        answersOfcol3.append([rowcol3 ,'C'])
-    elif(answersOfcol3XY[answer][0] > 186 and answersOfcol3XY[answer][0] < 195 ):
-        answersOfcol3.append([rowcol3 ,'D'])
-    else:
-        answersOfcol3.append([rowcol3 ,'Err'])
-    previousrowYcol3 = answersOfcol3XY[answer][1]
+    if(answersOfcol3XY[answer][1] > 70 ):
+        if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 2 and answersOfcol3XY[answer][1] < previousrowYcol3 + 2)):
+            startptcol3 += 1
+            rowcol3 -= 1
+        if(answersOfcol3XY[answer][0] > 87 and answersOfcol3XY[answer][0] < 95 ):
+            answersOfcol3.append([rowcol3 ,'A'])
+        elif(answersOfcol3XY[answer][0] > 120 and answersOfcol3XY[answer][0] < 128 ):
+            answersOfcol3.append([rowcol3 ,'B'])
+        elif(answersOfcol3XY[answer][0] > 153 and answersOfcol3XY[answer][0] < 161 ):
+            answersOfcol3.append([rowcol3 ,'C'])
+        elif(answersOfcol3XY[answer][0] > 186 and answersOfcol3XY[answer][0] < 195 ):
+            answersOfcol3.append([rowcol3 ,'D'])
+        else:
+            answersOfcol3.append([rowcol3 ,'Err'])
+        previousrowYcol3 = answersOfcol3XY[answer][1]
 
 #in col of ID
 col4rect = cv2.resize(col4rect, (0,0), fx=2, fy=2)
