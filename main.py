@@ -9,7 +9,7 @@ import  math
 
 
 #Orginal image
-imgdir = 'testcaserot.jpg'
+imgdir = 'testcases/test3.jpg'
 Orimg = cv2.imread(imgdir)
 
 
@@ -40,6 +40,8 @@ for cont in contourssss:
     cv2.circle(small3,(int(x),int(y)),int(radius),(0,255,255),3)
     xyofBigCirles.append([int(x),int(y)])
 angle =  math.atan2((xyofBigCirles[1][1]-xyofBigCirles[0][1]),(xyofBigCirles[1][0]-xyofBigCirles[0][0]))*180/math.pi
+print 'angle1' , angle
+
 #if image overturned
 if(xyofBigCirles[0][1] < erodededtofindrotate.shape[1] and  xyofBigCirles[1][1] < erodededtofindrotate.shape[1] ):
     angle = 180 + angle
@@ -47,6 +49,8 @@ if(xyofBigCirles[0][1] < erodededtofindrotate.shape[1] and  xyofBigCirles[1][1] 
 if(angle <= -90.0):
  angle = 180.0 + angle
 
+if(angle == 180.0):
+ angle = 0
 
 print 'angle' , angle
 r = cv2.getRotationMatrix2D((small3.shape[0]/2.,small3.shape[0]/2.),angle,1.0)
@@ -196,16 +200,17 @@ cv2.imwrite("dist/8_ColIDofAnswers.jpg",col4rect)
 
 #in Col1
 col1rect = cv2.resize(col1rect, (0,0), fx=2, fy=2)
-
 col1rect = cv2.cvtColor(col1rect,cv2.COLOR_RGB2GRAY)
+col1rectcopy = col1rect.copy()
 aftergauss2 = cv2.GaussianBlur(col1rect,(3,3),0)
-afterthreshold2 = cv2.adaptiveThreshold(aftergauss2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10);
+afterthreshold2 = cv2.adaptiveThreshold(aftergauss2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C , cv2.THRESH_BINARY,75,10)
+
 afterbitwise2 = cv2.bitwise_not( afterthreshold2)
+
 kernel_Abig = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8,8))
 afterbitwise2 = cv2.erode(afterbitwise2,kernel_Abig)
 kernel_Abig1 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 afterbitwise2 = cv2.dilate(afterbitwise2,kernel_Abig1)
-
 cv2.imshow("9_ThresholdCol1ofAnswers",afterbitwise2)
 cv2.imwrite("dist/9_ThresholdCol1ofAnswers.jpg",afterbitwise2)
 
@@ -220,7 +225,9 @@ cv2.imshow("demo",afterbitwise2)
 img3,contourss, hierarchys = cv2.findContours(afterbitwise2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    if int(radius) > 5 and int(radius) < 8:
+    print "coldd" , col1rect[int(y),int(x)]
+    if int(radius) > 5 and int(radius) < 8 and col1rect[int(y),int(x)] < 215:
+
         cv2.circle(col1rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol1XY.append([x,y])
 
@@ -241,9 +248,9 @@ for answer in xrange(len(answersOfcol1XY) ):
             answersOfcol1.append([row ,'A'])
         elif(answersOfcol1XY[answer][0] > 126 and answersOfcol1XY[answer][0] < 138 ):
             answersOfcol1.append([row ,'B'])
-        elif(answersOfcol1XY[answer][0] > 163 and answersOfcol1XY[answer][0] < 168 ):
+        elif(answersOfcol1XY[answer][0] > 163 and answersOfcol1XY[answer][0] < 170 ):
             answersOfcol1.append([row ,'C'])
-        elif(answersOfcol1XY[answer][0] > 195 and answersOfcol1XY[answer][0] < 200 ):
+        elif(answersOfcol1XY[answer][0] > 195 and answersOfcol1XY[answer][0] < 205 ):
             answersOfcol1.append([row ,'D'])
         else:
             answersOfcol1.append([row ,'Err'])
@@ -276,7 +283,8 @@ for drawcirclie in range(102,551,32):
 img3,contourss2, hierarchys = cv2.findContours(afterbitwise3,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss2:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    if int(radius) > 5 and int(radius) < 8:
+    if int(radius) > 5 and int(radius) < 8 and col2rect[int(y),int(x)] < 215:
+        print "cold" , col2rect[int(y),int(x)]
         cv2.circle(col2rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol2XY.append([x,y])
 
@@ -293,13 +301,13 @@ for answer in xrange(len(answersOfcol2XY) ):
         if(not(answersOfcol2XY[answer][1] > previousrowYcol2 - 4 and answersOfcol2XY[answer][1] < previousrowYcol2 + 4)):
             startptcol2 += 1
             rowcol2 -= 1
-        if(answersOfcol2XY[answer][0] > 90 and answersOfcol2XY[answer][0] < 101 ):
+        if(answersOfcol2XY[answer][0] > 90 and answersOfcol2XY[answer][0] < 105 ):
             answersOfcol2.append([rowcol2 ,'A'])
-        elif(answersOfcol2XY[answer][0] > 125 and answersOfcol2XY[answer][0] < 132 ):
+        elif(answersOfcol2XY[answer][0] > 125 and answersOfcol2XY[answer][0] < 137 ):
             answersOfcol2.append([rowcol2 ,'B'])
-        elif(answersOfcol2XY[answer][0] > 157 and answersOfcol2XY[answer][0] < 165 ):
+        elif(answersOfcol2XY[answer][0] > 157 and answersOfcol2XY[answer][0] < 170 ):
             answersOfcol2.append([rowcol2 ,'C'])
-        elif(answersOfcol2XY[answer][0] > 191 and answersOfcol2XY[answer][0] < 198 ):
+        elif(answersOfcol2XY[answer][0] > 191 and answersOfcol2XY[answer][0] < 200 ):
             answersOfcol2.append([rowcol2 ,'D'])
         else:
             answersOfcol2.append([rowcol2 ,'Err'])
@@ -326,7 +334,7 @@ answersOfcol3XY = []
 answersOfcol3 = []
 for drawcirclie in range(102,551,32):
     print drawcirclie
-    cv2.circle(afterbitwise4,(220,drawcirclie),6,(255,255,255),2)
+    cv2.circle(afterbitwise4,(220,drawcirclie),6,(255,255,255),1)
 
 cv2.imshow("14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage",afterbitwise4)
 cv2.imwrite("dist/14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage.jpg",afterbitwise4)
@@ -334,7 +342,7 @@ cv2.imwrite("dist/14_ThresholdCol3ofAnswersDetectAnswersplusdrawImage.jpg",after
 img3,contourss3, hierarchys = cv2.findContours(afterbitwise4,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss3:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    if int(radius) > 5 and int(radius) < 8:
+    if int(radius) > 5 and int(radius) < 8 and col3rect[int(y),int(x)] < 215:
         print 'col3' ,  y
         cv2.circle(col3rect,(int(x),int(y)),3,(0,255,255),3)
         answersOfcol3XY.append([x,y])
@@ -343,20 +351,21 @@ for cont in contourss3:
 cv2.imshow("15_Col3ofAnswersDetectAnswersplusdrawImage",col3rect)
 cv2.imwrite("dist/15_Col3ofAnswersDetectAnswersplusdrawImage.jpg",col3rect)
 
-previousrowYcol3 = 518
+previousrowYcol3 = 522
 startptcol3 = 0
 rowcol3 = 46
+print "answersOfcol3XY" , answersOfcol3XY
 
 for answer in xrange(len(answersOfcol3XY) ):
     if(answersOfcol3XY[answer][1] > 60 and answersOfcol3XY[answer][1] < 560 ):
         if(not(answersOfcol3XY[answer][1] > previousrowYcol3 - 4 and answersOfcol3XY[answer][1] < previousrowYcol3 + 4)):
             startptcol3 += 1
             rowcol3 -= 1
-        if(answersOfcol3XY[answer][0] > 87 and answersOfcol3XY[answer][0] < 95 ):
+        if(answersOfcol3XY[answer][0] > 87 and answersOfcol3XY[answer][0] < 100 ):
             answersOfcol3.append([rowcol3 ,'A'])
-        elif(answersOfcol3XY[answer][0] > 120 and answersOfcol3XY[answer][0] < 128 ):
+        elif(answersOfcol3XY[answer][0] > 120 and answersOfcol3XY[answer][0] < 130 ):
             answersOfcol3.append([rowcol3 ,'B'])
-        elif(answersOfcol3XY[answer][0] > 153 and answersOfcol3XY[answer][0] < 161 ):
+        elif(answersOfcol3XY[answer][0] > 153 and answersOfcol3XY[answer][0] < 165 ):
             answersOfcol3.append([rowcol3 ,'C'])
         elif(answersOfcol3XY[answer][0] > 186 and answersOfcol3XY[answer][0] < 195 ):
             answersOfcol3.append([rowcol3 ,'D'])
@@ -386,7 +395,8 @@ idNumList = []
 img3,contourss4, hierarchys = cv2.findContours(afterbitwise5,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 for cont in contourss4:
     (x,y),radius = cv2.minEnclosingCircle(cont)
-    if int(radius) > 5 and int(radius) < 8:
+    print "radiusid" , x ,y
+    if int(radius) > 5 and int(radius) < 9 and col4rect[int(y),int(x)] < 140:
         print x ,y
         cv2.circle(col4rect,(int(x),int(y)),3,(0,255,255),3)
         idNumList.append([x,y])
@@ -400,11 +410,11 @@ numberofID = []
 print "sortedidNumList", sortedidNumList
 for num in xrange(len(sortedidNumList)):
     if(sortedidNumList[num][0] >84 and sortedidNumList[num][0] < 205 and  sortedidNumList[num][1] > 86 and sortedidNumList[num][1] < 438):
-        if(sortedidNumList[num][1] >193 and sortedidNumList[num][1] < 201 ):
+        if(sortedidNumList[num][1] >193 and sortedidNumList[num][1] < 205 ):
             numberofID.append(1)
         elif(sortedidNumList[num][1] >220 and sortedidNumList[num][1] < 228 ):
             numberofID.append(2)
-        elif (sortedidNumList[num][1] >246 and sortedidNumList[num][1] < 254 ):
+        elif (sortedidNumList[num][1] >246 and sortedidNumList[num][1] < 258 ):
             numberofID.append(3)
         elif (sortedidNumList[num][1] >272 and sortedidNumList[num][1] < 280 ):
             numberofID.append(4)
@@ -414,7 +424,7 @@ for num in xrange(len(sortedidNumList)):
             numberofID.append(6)
         elif (sortedidNumList[num][1] >351 and sortedidNumList[num][1] < 359 ):
             numberofID.append(7)
-        elif (sortedidNumList[num][1] >377 and sortedidNumList[num][1] < 385 ):
+        elif (sortedidNumList[num][1] >377 and sortedidNumList[num][1] < 388 ):
             numberofID.append(8)
         elif (sortedidNumList[num][1] >403 and sortedidNumList[num][1] < 411 ):
             numberofID.append(9)
